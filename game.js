@@ -65,6 +65,7 @@ const enableBox = () => {
         box.classList.remove("playerO", "playerX");
         msgContainer.classList.add("hide");
     }
+    turnX = true;
 };
 const checkDraw = () => {
     let count = 0;
@@ -80,4 +81,5 @@ const checkDraw = () => {
     })
 }
 resetBtn.addEventListener("click", enableBox);
+
 newGameBtn.addEventListener("click", enableBox);
