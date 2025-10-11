@@ -4,6 +4,7 @@ let winmsg = document.querySelector("#win-msg");
 let newGameBtn = document.querySelector("#newGame");
 let resetBtn = document.querySelector("#reset");
 let turnX = true;
+let pturn = document.querySelector("#turn");
 
 const winPattern = [
     [0,1,2],
@@ -15,6 +16,20 @@ const winPattern = [
     [0,4,8],
     [2,4,6]
 ];
+
+const checkTurn = () => {
+  if (turnX) {
+    pturn.innerHTML = "It's **X's** Turn"; // Use innerHTML for bolding
+    pturn.classList.remove("playerO");
+    pturn.classList.add("playerX");
+  } else {
+    pturn.innerHTML = "It's **O's** Turn";
+    pturn.classList.remove("playerX");
+    pturn.classList.add("playerO");
+  }
+};
+checkTurn();
+
 boxes.forEach((box) =>{
     box.addEventListener("click", () =>{
         console.log(`Button-Clicked`);
@@ -32,6 +47,9 @@ boxes.forEach((box) =>{
             turnX = true;
         }
         checkWinner();
+        if (msgContainer.classList.contains("hide")) {
+      checkTurn();
+    }
     })
 })
 const checkWinner = () => {
@@ -43,6 +61,8 @@ const checkWinner = () => {
             if(pos0 === pos1 && pos1 === pos2){
                 console.log(`Winner is ${pos0}`);
                 showWinner(pos0);
+                disableBox();
+                return;
             }
         }
     }
@@ -51,6 +71,8 @@ const checkWinner = () => {
 const showWinner = (pos0) => {
     msgContainer.classList.remove("hide");
     winmsg.innerText = `Congratulations Winner "${pos0}"`;
+    pturn.innerText = "Game Over!"; // ✅ FIX 2: Update turn area to Game Over
+    pturn.classList.remove("playerX", "playerO");
     disableBox();
 };
 const disableBox = () => {
@@ -66,6 +88,7 @@ const enableBox = () => {
         msgContainer.classList.add("hide");
     }
     turnX = true;
+    checkTurn();
 };
 const checkDraw = () => {
     let count = 0;
@@ -73,13 +96,15 @@ const checkDraw = () => {
         if(box.innerText !== ""){
             count++;
         }
+        });
         if(count === 9){
             winmsg.innerHTML = `Match Draw, Play Again...!`;
             msgContainer.classList.remove("hide");
+            pturn.innerText = ""; // ✅ FIX 3: Update turn area for a draw
+            pturn.classList.remove("playerX", "playerO");
             disableBox();
         }
-    })
-}
+};
 resetBtn.addEventListener("click", enableBox);
-
 newGameBtn.addEventListener("click", enableBox);
+
