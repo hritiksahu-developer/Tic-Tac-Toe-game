@@ -68,3 +68,10 @@ body{
 .playerX{
     color: rgb(38, 255, 0);
 }
+#turn {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 1rem 0;
+  color: #fff; /* Default color for the text */
+}
+
